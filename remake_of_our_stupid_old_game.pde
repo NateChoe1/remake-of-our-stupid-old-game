@@ -10,20 +10,18 @@ int showscoreframe = 2160000;
 int cryface;
 int player1points;
 int player2points;
+EndingBanner banner = new EndingBanner();
 ArrayList<Bullet> player1Bullets = new ArrayList<Bullet>();
 ArrayList<Bullet> player2Bullets = new ArrayList<Bullet>();
 char[] keys = {'Q', 'A', 'T', 'G', 'U', 'J', '[', ';'};
-PImage background, longneck, cryface1, cryface2, explosion, arm1, arm2;
+PImage background, longneck, arm1, arm2;
 
 void setup() {
   size(500, 514);
   background = loadImage("sprites\\background.png");
   longneck = loadImage("sprites\\longneck.png");
   target1.init(1);
-  target2.init(2);
-  cryface1 = loadImage("sprites\\cryface1.png");
-  cryface2 = loadImage("sprites\\cryface2.png");
-  explosion = loadImage("sprites\\explosion.jpg");
+  target2.init(2); 
   arm1 = loadImage("sprites\\arm1.png");
   arm2 = loadImage("sprites\\arm2.png");
   gun1.init(1);
@@ -59,6 +57,7 @@ void draw() {
       player1points++;
       showHit(1);
       didHit = true;
+      banner.start(1);
     }
     if (x.outOfBounds()) {
       player1Bullets.remove(i);
@@ -72,6 +71,7 @@ void draw() {
       player2points++;
       showHit(2);
       didHit = true;
+      banner.start(2);
     }
     if (x.outOfBounds()) {
       player1Bullets.remove(i);
@@ -94,20 +94,11 @@ void draw() {
   text("Ammo: " + gun1.ammo, 50, 50);
   text("Ammo: " + gun2.ammo, 350, 50);
   
-  if (frameCount >= showscoreframe) {
+  banner.draw();
+  
+  if (banner.timer <= 0) {
     text("score: " + player1points, 50, 30);
     text("score: " + player2points, 350, 30);
-  }
-  if (cryface == 1 && frameCount <= stopframe && frameCount >= startframe) {
-    image(cryface1, 50, 0);
-  }
-  else if (cryface == 2 && frameCount <= stopframe && frameCount >= startframe) {
-    image(cryface2, 50, 0);
-  }
-  else if (frameCount > stopframe && frameCount < realstopframe) {
-    image(explosion, -330, -250);
-    gun1.ammo = 0;
-    gun2.ammo = 0;
   }
   textSize(10);
   text("Created by Nate and Glenn Choe", 0, 10);
