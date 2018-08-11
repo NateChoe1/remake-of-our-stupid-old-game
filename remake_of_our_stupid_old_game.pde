@@ -58,43 +58,27 @@ void draw() {
   target1.draw();
   target2.draw();
   if (bullet1.moving) {
-    if (gun1.justShot) {
-      bullet1.y = gun1.y;
-      bullet1.didHit(target2.y);
-      gun1.justShot = false;
-    }
-    else {
-      if (bullet1.didHit(target2.y)) {
-        player1points++;
-        bullet1 = new Bullet(1);
-        showscoreframe = frameCount + 240;
-        realstopframe = frameCount + 180;
-        stopframe = frameCount + 120;
-        startframe = frameCount + 60;
-        cryface = 1;
-      }
-    }
-  }
-  if (bullet2.moving) {
-    if (gun2.justShot) {
+    bullet1.draw();
+    if (bullet1.didHit(target2.y)) {
+      player1points++;
+      bullet1 = new Bullet(1);
       showscoreframe = frameCount + 240;
       realstopframe = frameCount + 180;
       stopframe = frameCount + 120;
       startframe = frameCount + 60;
-      bullet1.y = gun1.y;
-      bullet2.didHit(target2.y);
-      gun2.justShot = false;
+      cryface = 1;
     }
-    else {
-      if (bullet2.didHit(target2.y)) {
-        player2points++;
-        bullet2 = new Bullet(2);
-        showscoreframe = frameCount + 240;
-        realstopframe = frameCount + 180;
-        stopframe = frameCount + 120;
-        startframe = frameCount + 60;
-        cryface = 1;
-      }
+  }
+  if (bullet2.moving) {
+    bullet2.draw();
+    if (bullet2.didHit(target2.y)) {
+      player2points++;
+      bullet2 = new Bullet(2);
+      showscoreframe = frameCount + 240;
+      realstopframe = frameCount + 180;
+      stopframe = frameCount + 120;
+      startframe = frameCount + 60;
+      cryface = 1;
     }
   }
   if (frameCount >= showscoreframe) {
@@ -133,12 +117,12 @@ void keyPressed() {
       }
     }
     
-    if (keyCode == 'R' && bullet2.equals(new Bullet(2))) {
-      bullet2.trigger(gun2);
+    if (keyCode == 'R') {
+      bullet2 = gun2.trigger();
       bullet2.moving = true;
     }
-    if (keyCode == TAB && bullet1.equals(new Bullet(1))) {
-      bullet1.trigger(gun1);
+    if (keyCode == TAB) {
+      bullet1 = gun1.trigger();
       bullet1.moving = true;
     }
   }
