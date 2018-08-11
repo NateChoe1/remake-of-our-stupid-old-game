@@ -3,8 +3,6 @@ Gun gun1 = new Gun();
 Gun gun2 = new Gun();
 Target target1 = new Target();
 Target target2 = new Target();
-Bullet bullet1;
-Bullet bullet2;
 int startframe;
 int stopframe;
 int realstopframe;
@@ -12,6 +10,8 @@ int showscoreframe = 2160000;
 int cryface;
 int player1points;
 int player2points;
+ArrayList<Bullet> player1Bullets = new ArrayList<Bullet>();
+ArrayList<Bullet> player2Bullets = new ArrayList<Bullet>();
 char[] keys = {'Q', 'A', 'T', 'G', 'U', 'J', '[', ';'};
 PImage background, longneck, cryface1, cryface2, explosion, arm1, arm2;
 
@@ -28,8 +28,6 @@ void setup() {
   arm2 = loadImage("sprites\\arm2.png");
   gun1.init(1);
   gun2.init(2);
-  bullet1 = new Bullet(1);
-  bullet2 = new Bullet(2);
   rectMode(CORNER);
   imageMode(CORNER);
 }
@@ -53,23 +51,52 @@ void draw() {
   text("[; for second target, ", 120, 210);
   text("tab to shoot the first gun, ", 120, 230);
   text("R to shoot second gun", 120, 250);
-  if (bullet1.moving) {
-    bullet1.draw();
-    if (bullet1.didHit(target2.y)) {
+  boolean didHit = false;
+  for (int i = player1Bullets.size() - 1; i >= 0; i--) {
+    Bullet x = player1Bullets.get(i);
+    x.draw();
+    if (x.didHit(target2.y)) {
       player1points++;
       showHit(1);
+      didHit = true;
+    }
+    if (x.outOfBounds()) {
+      player1Bullets.remove(i);
     }
   }
-  if (bullet2.moving) {
-    bullet2.draw();
-    if (bullet2.didHit(target2.y)) {
+  
+  for (int i = player2Bullets.size() - 1; i >= 0; i--) {
+    Bullet x = player2Bullets.get(i);
+    x.draw();
+    if (x.didHit(target1.y)) {
       player2points++;
       showHit(2);
+      didHit = true;
+    }
+    if (x.outOfBounds()) {
+      player1Bullets.remove(i);
     }
   }
+  if (didHit) { 
+    player1Bullets.clear();
+    player2Bullets.clear();
+  }
+  
+  if (frameCount % 60 == 0) {
+    if (gun1.ammo < 10) {
+      gun1.ammo++;
+    }
+    if (gun2.ammo < 10) {
+      gun2.ammo++;
+    }
+  }
+  
+  text("Ammo: " + gun1.ammo, 50, 50);
+  text("Ammo: " + gun2.ammo, 350, 50);
+  
   if (frameCount >= showscoreframe) {
-    text("score: " + player1points, 50, 20);
-    text("score: " + player2points, 350, 20);
+    text("score: " + player1points, 50, 30);
+    text("score: " + player2points, 350, 30);
   }
   if (cryface == 1 && frameCount <= stopframe && frameCount >= startframe) {
     image(cryface1, 50, 0);
@@ -79,6 +106,8 @@ void draw() {
   }
   else if (frameCount > stopframe && frameCount < realstopframe) {
     image(explosion, -330, -250);
+    gun1.ammo = 0;
+    gun2.ammo = 0;
   }
   textSize(10);
   text("Created by Nate and Glenn Choe", 0, 10);
@@ -97,13 +126,14 @@ void keyPressed() {
     }
   }
   
-  if (keyCode == 'R') {
-    bullet2 = gun2.trigger();
-    bullet2.moving = true;
+  
+  if (keyCode == TAB && gun1.ammo > 0) {
+    player1Bullets.add(gun1.trigger());
+    gun1.ammo--;
   }
-  if (keyCode == TAB) {
-    bullet1 = gun1.trigger();
-    bullet1.moving = true;
+  if (keyCode == 'R' && gun2.ammo > 0) {
+    player2Bullets.add(gun2.trigger());
+    gun2.ammo--;
   }
 }
 

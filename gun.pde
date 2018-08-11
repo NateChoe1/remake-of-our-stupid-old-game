@@ -3,6 +3,7 @@ class Gun extends MoveVert {
   int side;
   int gunHeight = 22;
   int PADDING = 83;
+  int ammo = 0;
   
   void init(int _side) {
     y = 60;
