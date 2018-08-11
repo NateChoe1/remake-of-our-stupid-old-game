@@ -1,6 +1,9 @@
 class Target extends MoveVert {
   int side;
   PImage img;
+  int paddingLeft = 44;
+  int paddingRight = 45;
+  int targetHeight = 20;
   
   void init(int _side) {
     y = 330;
@@ -9,7 +12,7 @@ class Target extends MoveVert {
   }
   
   void draw() {
-    int[] xs = {44, 378};
-    image(img, xs[side - 1], y - 792);
+    int[] xs = {paddingLeft, width - paddingRight - img.width};
+    image(img, xs[side - 1], y - img.height + targetHeight);
   }
 }

@@ -1,14 +1,16 @@
 class MoveVert {
   int y;
+  int WALL_TOP = 60;
+  int WALL_BOTTOM = 330;
   
   void moveUp() {
-    if (y > 50) {
+    if (y > WALL_TOP) {
       y -= 5;
     }
   }
   
   void moveDown() {
-    if (y < 330) {
+    if (y < WALL_BOTTOM) {
       y += 5;
     }
   }

@@ -3,8 +3,8 @@ Gun gun1 = new Gun();
 Gun gun2 = new Gun();
 Target target1 = new Target();
 Target target2 = new Target();
-Bullet bullet1 = new Bullet();
-Bullet bullet2 = new Bullet();
+Bullet bullet1;
+Bullet bullet2;
 int startframe;
 int stopframe;
 int realstopframe;
@@ -13,10 +13,8 @@ int cryface;
 int player1points;
 int player2points;
 boolean justscored = false;
-boolean bullet1moving = false;
 int bullet2x = 360;
 int bullet2y = 50;
-boolean bullet2moving = false;
 char[] keys = {'Q', 'A', 'T', 'G', 'U', 'J', '[', ';'};// char 39 is a single parenthesis
 PImage background, longneck, cryface1, cryface2, explosion, arm1, arm2;
 
@@ -33,8 +31,8 @@ void setup() {
   arm2 = loadImage("sprites\\arm2.png");
   gun1.init(1);
   gun2.init(2);
-  bullet1.init(1);
-  bullet2.init(2);
+  bullet1 = new Bullet(1);
+  bullet2 = new Bullet(2);
 }
 
 void draw() {
@@ -59,45 +57,45 @@ void draw() {
   
   target1.draw();
   target2.draw();
-  if (bullet1moving) {
+  if (bullet1.moving) {
     if (gun1.justShot) {
-      shootbullet(bullet1, gun1.y, bullet1x, true);
-      bullet1y = gun1.y;
+      bullet1.y = gun1.y;
+      bullet1.didHit(target2.y);
       gun1.justShot = false;
     }
     else {
-      shootbullet(bullet1, bullet1y, bullet1x, true);
+      if (bullet1.didHit(target2.y)) {
+        player1points++;
+        bullet1 = new Bullet(1);
+        showscoreframe = frameCount + 240;
+        realstopframe = frameCount + 180;
+        stopframe = frameCount + 120;
+        startframe = frameCount + 60;
+        cryface = 1;
+      }
     }
   }
-  if (bullet2moving) {
+  if (bullet2.moving) {
     if (gun2.justShot) {
-      shootbullet(bullet2, gun2.y, bullet2x, false);
-      bullet2y = gun2.y;
+      showscoreframe = frameCount + 240;
+      realstopframe = frameCount + 180;
+      stopframe = frameCount + 120;
+      startframe = frameCount + 60;
+      bullet1.y = gun1.y;
+      bullet2.didHit(target2.y);
       gun2.justShot = false;
     }
     else {
-      shootbullet(bullet2, bullet2y, bullet2x, false);
+      if (bullet2.didHit(target2.y)) {
+        player2points++;
+        bullet2 = new Bullet(2);
+        showscoreframe = frameCount + 240;
+        realstopframe = frameCount + 180;
+        stopframe = frameCount + 120;
+        startframe = frameCount + 60;
+        cryface = 1;
+      }
     }
-  }
-  if (bullet1x > 368 && bullet1y >= target2.y && bullet1y <= target2.y + 10) {
-    player1points++;
-    showscoreframe = frameCount + 240;
-    realstopframe = frameCount + 180;
-    stopframe = frameCount + 120;
-    startframe = frameCount + 60;
-    bullet1moving = false;
-    bullet1y = 0;
-    cryface = 1;
-  }
-  if (bullet2x < 100 && bullet2y >= target1.y && bullet2y <= target1.y + 10) {
-    player2points++;
-    showscoreframe = frameCount + 240;
-    realstopframe = frameCount + 180;
-    stopframe = frameCount + 120;
-    startframe = frameCount + 60;
-    bullet2moving = false;
-    bullet2y = 0;
-    cryface = 2;
   }
   if (frameCount >= showscoreframe) {
     text("score: " + player1points, 50, 20);
@@ -119,33 +117,6 @@ void draw() {
   textSize(10);
   text("Created by Nate and Glenn Choe", 0, 10);
 }
-
-void shootbullet(PImage bullet, int guny, int bulletx, boolean shotgun1) {
-  image(bullet, bulletx, guny + 2);
-  if (shotgun1) {
-    if (frameCount % 5 == 0) {
-      bullet1x += 260 / 15;
-      if (bullet1x > 500) {
-        bullet1moving = false;
-        bullet1x = 140;
-        gun1.justShot = true;
-        bullet1y = 0;
-      }
-    }
-  }
-  else {
-    if (frameCount % 5 == 0) {
-      bullet2x -= 260 / 15;
-      if (bullet2x < 0) {
-        bullet2moving = false;
-        bullet2x = 360;
-        gun2.justShot = true;
-        bullet2y = 0;
-      }
-    }
-  }
-}
-
 void keyPressed() {
   if (justscored == false) {
     
@@ -162,11 +133,13 @@ void keyPressed() {
       }
     }
     
-    if (keyCode == 'R') {
-      bullet2moving = true;
+    if (keyCode == 'R' && bullet2.equals(new Bullet(2))) {
+      bullet2.trigger(gun2);
+      bullet2.moving = true;
     }
-    if (keyCode == TAB) {
-      bullet1moving = true;
+    if (keyCode == TAB && bullet1.equals(new Bullet(1))) {
+      bullet1.trigger(gun1);
+      bullet1.moving = true;
     }
   }
 }

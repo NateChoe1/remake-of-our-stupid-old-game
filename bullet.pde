@@ -4,9 +4,9 @@ class Bullet {
   int direction;
   PImage img;
   int side;
-  boolean justHit;
+  boolean moving;
   
-  void init(int _side) {
+  Bullet (int _side) {
     side = _side;
     img = loadImage("sprites\\bullet" + side + ".png");
   }
@@ -16,9 +16,9 @@ class Bullet {
     x = xs[side - 1];
     y = gun.y;
     if(gun.side == 1) {
-      direction = 260 / 15;
+      direction = 260 / 20;
     } else {
-      direction = -260 / 15;
+      direction = -260 / 20;
     }
   }
   
