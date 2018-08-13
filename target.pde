@@ -5,7 +5,7 @@ class Target extends MoveVert {
   int paddingRight = 45;
   int targetHeight = 20;
   
-  void init(int _side) {
+  Target(int _side) {
     y = 330;
     side = _side;
     img = loadImage("sprites\\neck" + side + ".png");

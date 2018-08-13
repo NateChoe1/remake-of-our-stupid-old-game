@@ -5,7 +5,7 @@ class Gun extends MoveVert {
   int PADDING = 83;
   int ammo = 0;
   
-  void init(int _side) {
+  Gun(int _side) {
     y = 60;
     img = loadImage("sprites\\gunarm" + _side + ".png");
     side = _side;
