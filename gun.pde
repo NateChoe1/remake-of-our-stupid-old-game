@@ -1,8 +1,8 @@
 class Gun extends MoveVert {
-  PImage img;
-  int side;
-  int gunHeight = 22;
-  int PADDING = 83;
+  private PImage img;
+  private int side;
+  private int gunHeight = 22;
+  private int PADDING = 83;
   int ammo = 0;
   
   Gun(int _side) {
@@ -17,6 +17,7 @@ class Gun extends MoveVert {
     int[] boundaries = {370, 110};
     bullet.x = xs[side - 1];
     bullet.y = y;
+    ammo--;
     if(side == 1) {
       bullet.direction = 260 / 20;
     } else {
@@ -26,8 +27,13 @@ class Gun extends MoveVert {
     return bullet;
   }
   
+  boolean hasAmmo() {return (ammo > 0);}
+  
   void draw() {
     int[] xs = {PADDING, width - PADDING - img.width};
     image(img, xs[side - 1], y - img.height + gunHeight);
+    if (frameCount % 60 == 0 && ammo < 10) {
+      ammo++;
+    }
   }
 }

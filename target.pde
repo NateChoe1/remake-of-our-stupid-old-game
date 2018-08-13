@@ -1,9 +1,9 @@
 class Target extends MoveVert {
-  int side;
-  PImage img;
-  int paddingLeft = 44;
-  int paddingRight = 45;
-  int targetHeight = 20;
+  private int side;
+  private PImage img;
+  private int paddingLeft = 44;
+  private int paddingRight = 45;
+  private int targetHeight = 20;
   
   Target(int _side) {
     y = 330;
