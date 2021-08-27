@@ -8,7 +8,7 @@ class Target extends MoveVert {
   Target(int _side) {
     y = 330;
     side = _side;
-    img = loadImage("sprites\\neck" + side + ".png");
+    img = loadImage("sprites/neck" + side + ".png");
   }
   
   void draw() {

@@ -7,8 +7,8 @@ class EndingBanner {
   void start(int _side) {
     side = _side;
     timer = 240;
-    explosion = loadImage("sprites\\explosion.jpg");
-    cryface = loadImage("sprites\\cryface" + side + ".png");
+    explosion = loadImage("sprites/explosion.jpg");
+    cryface = loadImage("sprites/cryface" + side + ".png");
     
   }
   

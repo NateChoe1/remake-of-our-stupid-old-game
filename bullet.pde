@@ -9,7 +9,7 @@ class Bullet {
   
   Bullet (int _side) {
     side = _side;
-    img = loadImage("sprites\\bullet" + side + ".png");
+    img = loadImage("sprites/bullet" + side + ".png");
   }
   
   boolean outOfBounds() {

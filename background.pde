@@ -2,10 +2,10 @@ class Background {
   PImage background, longneck, arm1, arm2;
   
   Background() {
-    background = loadImage("sprites\\background.png");
-    longneck = loadImage("sprites\\longneck.png");
-    arm1 = loadImage("sprites\\arm1.png");
-    arm2 = loadImage("sprites\\arm2.png");
+    background = loadImage("sprites/background.png");
+    longneck = loadImage("sprites/longneck.png");
+    arm1 = loadImage("sprites/arm1.png");
+    arm2 = loadImage("sprites/arm2.png");
   }
   
   void preDraw() {
